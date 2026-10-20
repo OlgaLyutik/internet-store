@@ -1,11 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SHOP — шаблон інтернет-магазину</title>
+<style>
+:root{--bg:#fff;--surface:#f5f6fa;--text:#1d2333;--muted:#6b7285;--primary:#2f4fd8;--primary-text:#fff;--accent:#e5484d;--border:#e3e6ee;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151f;--surface:#1b2030;--text:#eceef5;--muted:#9aa1b5;--primary:#6f8bff;--primary-text:#0d1020;--accent:#ff6b70;--border:#2a3045;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12151f;--surface:#1b2030;--text:#eceef5;--muted:#9aa1b5;--primary:#6f8bff;--primary-text:#0d1020;--accent:#ff6b70;--border:#2a3045;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.top{background:var(--surface);font-size:13px;color:var(--muted);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;justify-content:space-between;gap:12px;padding:8px 16px;flex-wrap:wrap}
+header.main{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--border);z-index:5}
+header.main .wrap{display:flex;align-items:center;gap:16px;padding:12px 16px}
+.logo{font-weight:800;font-size:24px;letter-spacing:1px;color:var(--primary)}
+.search{flex:1;display:flex;min-width:0}
+.search input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--border);border-right:0;border-radius:8px 0 0 8px;background:var(--surface);color:var(--text);font-size:15px}
+.search button{padding:0 16px;border:0;background:var(--primary);color:var(--primary-text);border-radius:0 8px 8px 0;cursor:pointer;font-size:15px}
+.icons{display:flex;gap:8px}
+.ibtn{position:relative;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:9px 12px;cursor:pointer;font-size:14px}
+.badge{position:absolute;top:-6px;right:-6px;background:var(--accent);color:#fff;font-size:11px;border-radius:10px;padding:1px 6px}
+nav.cats{border-bottom:1px solid var(--border);overflow-x:auto}
+nav.cats .wrap{display:flex;gap:4px;padding:0 16px}
+nav.cats a{white-space:nowrap;padding:12px 12px;font-size:14px;font-weight:600}
+nav.cats a:hover{color:var(--primary)}
+nav.cats a.sale{color:var(--accent)}
+.hero{position:relative;margin:20px auto;border-radius:16px;overflow:hidden;min-height:260px;color:#fff}
+.slide{display:none;min-height:260px;padding:40px;flex-direction:column;justify-content:center;gap:10px}
+.slide.on{display:flex}
+.s1{background:linear-gradient(120deg,#2f4fd8,#7a5cff)}.s2{background:linear-gradient(120deg,#e5484d,#ff9a5c)}.s3{background:linear-gradient(120deg,#12a37f,#4cc3d9)}
+.slide h1{margin:0;font-size:clamp(26px,4vw,42px)}
+.slide p{margin:0;max-width:480px;opacity:.95}
+.cta{display:inline-block;margin-top:8px;background:#fff;color:#1d2333;padding:10px 20px;border-radius:8px;font-weight:700;width:max-content}
+.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:8px}
+.dots button{width:10px;height:10px;border-radius:50%;border:0;background:rgba(255,255,255,.5);cursor:pointer;padding:0}
+.dots button.on{background:#fff}
+h2{font-size:24px;margin:32px 0 16px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 10px;text-align:center;font-weight:600}
+.tile span{display:block;font-size:32px;margin-bottom:6px}
+.tile:hover{border-color:var(--primary)}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:8px 16px;border-radius:20px;cursor:pointer;font-size:14px}
+.tabs button.on{background:var(--primary);color:var(--primary-text);border-color:var(--primary)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.img{height:170px;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative}
+.disc{position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px}
+.info{padding:12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.name{font-size:14px;font-weight:600;min-height:40px}
+.rate{font-size:12px;color:var(--muted)}
+.price{display:flex;align-items:baseline;gap:8px;margin-top:auto}
+.price b{font-size:20px}.price s{color:var(--muted);font-size:14px}
+.add{border:0;background:var(--primary);color:var(--primary-text);padding:10px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px}
+.add:active{transform:scale(.98)}
+.perks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:32px}
+.perk{background:var(--surface);border-radius:12px;padding:18px}
+.perk b{display:block;margin-bottom:4px}.perk span{color:var(--muted);font-size:14px}
+.about{color:var(--muted);max-width:820px}
+footer{margin-top:40px;background:var(--surface);border-top:1px solid var(--border);padding:32px 0 16px;font-size:14px}
+.fcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px}
+.fcols h4{margin:0 0 10px}.fcols a{display:block;color:var(--muted);padding:3px 0}
+.copy{text-align:center;color:var(--muted);margin-top:24px;font-size:13px}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(380px,100%);background:var(--bg);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .25s;z-index:20;display:flex;flex-direction:column;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.drawer.open{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:18px;margin-bottom:12px}
+.items{flex:1;overflow:auto}
+.row{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.row .n{flex:1}
+.row button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:6px;width:26px;height:26px;cursor:pointer}
+.total{display:flex;justify-content:space-between;font-weight:700;font-size:18px;padding:12px 0}
+.empty{color:var(--muted);text-align:center;margin-top:40px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:15}
+.scrim.on{display:block}
+@media(max-width:640px){.icons .t{display:none}.slide{padding:24px}}
+</style>
 </head>
 <body>
-    <h1>Welcome to the Internet Store</h1>
+<div class="top"><div class="wrap"><span>📍 Київ · Доставка по всій Україні</span><span>☎ 0 800 000 000 (безкоштовно) · Пн–Нд 9:00–18:00</span></div></div>
+<header class="main"><div class="wrap">
+  <a class="logo" href="#">SHOP</a>
+  <form class="search" onsubmit="return false"><input id="q" placeholder="Пошук товарів…" aria-label="Пошук"><button type="button" onclick="render()">Знайти</button></form>
+  <div class="icons">
+    <button class="ibtn" title="Бажане">♡ <span class="t">Бажане</span></button>
+    <button class="ibtn" onclick="toggleCart(true)">🛒 <span class="t">Кошик</span><span class="badge" id="cnt">0</span></button>
+  </div>
+</div></header>
+<nav class="cats"><div class="wrap">
+  <a class="sale" href="#">SALE</a><a href="#">Спальня</a><a href="#">Ванна кімната</a><a href="#">Домашній одяг</a><a href="#">Дитячі товари</a><a href="#">Кухня</a><a href="#">Преміум</a><a href="#">Outlet</a>
+</div></nav>
+
+<main class="wrap">
+  <section class="hero" id="hero">
+    <div class="slide s1 on"><h1>Нова колекція осені</h1><p>Якість від виробника за чесними цінами.</p><a class="cta" href="#hits">Дивитись</a></div>
+    <div class="slide s2"><h1>Розпродаж до −50%</h1><p>Обмежена пропозиція на популярні товари.</p><a class="cta" href="#hits">До акцій</a></div>
+    <div class="slide s3"><h1>Безкоштовна доставка</h1><p>Від 1 500 ₴ по всій Україні.</p><a class="cta" href="#">Умови</a></div>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <h2>Категорії</h2>
+  <div class="tiles">
+    <a class="tile" href="#"><span>🛏️</span>Спальня</a><a class="tile" href="#"><span>🛁</span>Ванна</a><a class="tile" href="#"><span>👘</span>Одяг</a>
+    <a class="tile" href="#"><span>🧸</span>Дитячі</a><a class="tile" href="#"><span>🍽️</span>Кухня</a><a class="tile" href="#"><span>⭐</span>Преміум</a>
+  </div>
+
+  <h2 id="hits">Хіти продажу</h2>
+  <div class="tabs" id="tabs"></div>
+  <div class="grid" id="grid"></div>
+
+  <div class="perks">
+    <div class="perk"><b>🚚 Швидка доставка</b><span>Відправка в день замовлення</span></div>
+    <div class="perk"><b>↩️ Повернення 14 днів</b><span>Без зайвих питань</span></div>
+    <div class="perk"><b>🛡️ Гарантія якості</b><span>Власне виробництво</span></div>
+    <div class="perk"><b>💬 Консультація</b><span>Допоможемо з вибором</span></div>
+  </div>
+
+  <h2>Про магазин</h2>
+  <p class="about">Тут розмістіть опис вашого магазину: хто ви, що виробляєте або продаєте, чому варто обрати саме вас. Цей блок також корисний для SEO-тексту.</p>
+</main>
+
+<footer><div class="wrap">
+  <div class="fcols">
+    <div><h4>Інформація</h4><a href="#">Про нас</a><a href="#">Акції та знижки</a><a href="#">Блог</a></div>
+    <div><h4>Покупцям</h4><a href="#">Доставка та оплата</a><a href="#">Повернення та обмін</a><a href="#">Контакти</a></div>
+    <div><h4>Контакти</h4><a href="#">0 800 000 000</a><a href="#">info@shop.example</a><a href="#">м. Київ, вул. Прикладна, 1</a></div>
+    <div><h4>Соцмережі</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">Telegram</a></div>
+  </div>
+  <div class="copy">© 2026 SHOP. Усі права захищені.</div>
+</div></footer>
+
+<div class="scrim" id="scrim" onclick="toggleCart(false)"></div>
+<aside class="drawer" id="drawer" aria-label="Кошик">
+  <div class="dh"><span>Кошик</span><button class="ibtn" onclick="toggleCart(false)">✕</button></div>
+  <div class="items" id="items"></div>
+  <div class="total"><span>Разом</span><span id="sum">0 ₴</span></div>
+  <button class="add" onclick="alert('Тут буде оформлення замовлення')">Оформити замовлення</button>
+</aside>
+
+<script>
+var P=[
+{id:1,n:"Подушка антиалергенна Comfort",e:"🛏️",p:439,o:665,r:38,t:"Подушки",c:"#cfe0ff"},
+{id:2,n:"Подушка ортопедична Premium",e:"💤",p:529,o:802,r:26,t:"Подушки",c:"#d9f2e6"},
+{id:3,n:"Подушка пухова Extra",e:"☁️",p:1296,o:2057,r:27,t:"Подушки",c:"#fde7c8"},
+{id:4,n:"Ковдра антиалергенна Eco",e:"🧺",p:1297,o:6485,r:33,t:"Ковдри",c:"#e6dcff"},
+{id:5,n:"Ковдра вовняна Gold",e:"🐑",p:934,o:1394,r:9,t:"Ковдри",c:"#fdd9dc"},
+{id:6,n:"Ковдра пухова касетна",e:"🪶",p:3697,o:6846,r:96,t:"Ковдри",c:"#d6f0f7"},
+{id:7,n:"Комплект білизни Stripe",e:"🛌",p:999,o:1638,r:20,t:"Білизна",c:"#cfe0ff"},
+{id:8,n:"Комплект білизни Light Gray",e:"🛌",p:999,o:1693,r:36,t:"Білизна",c:"#e4e6ee"},
+{id:9,n:"Комплект білизни Ranforce",e:"🛌",p:1199,o:1903,r:42,t:"Білизна",c:"#d9f2e6"}
+];
+var tab="Усі",cart={};
+function fmt(n){return n.toLocaleString("uk-UA")+" ₴"}
+function render(){
+  var tabs=["Усі"].concat([...new Set(P.map(x=>x.t))]);
+  document.getElementById("tabs").innerHTML=tabs.map(t=>'<button class="'+(t==tab?"on":"")+'" onclick="tab=\''+t+'\';render()">'+t+'</button>').join("");
+  var q=document.getElementById("q").value.toLowerCase();
+  var list=P.filter(x=>(tab=="Усі"||x.t==tab)&&x.n.toLowerCase().includes(q));
+  document.getElementById("grid").innerHTML=list.length?list.map(x=>{
+    var d=Math.round((1-x.p/x.o)*100);
+    return '<div class="card"><div class="img" style="background:'+x.c+'"><span class="disc">−'+d+'%</span>'+x.e+'</div><div class="info"><div class="name">'+x.n+'</div><div class="rate">★★★★★ · '+x.r+' відгуків</div><div class="price"><b>'+fmt(x.p)+'</b><s>'+fmt(x.o)+'</s></div><button class="add" onclick="add('+x.id+')">До кошика</button></div></div>'
+  }).join(""):'<p class="empty">Нічого не знайдено</p>';
+}
+function add(id){cart[id]=(cart[id]||0)+1;upd();toggleCart(true)}
+function chg(id,d){cart[id]+=d;if(cart[id]<=0)delete cart[id];upd()}
+function upd(){
+  var ids=Object.keys(cart),n=0,s=0;
+  document.getElementById("items").innerHTML=ids.length?ids.map(i=>{var x=P.find(p=>p.id==i),q=cart[i];n+=q;s+=q*x.p;
+    return '<div class="row"><span class="n">'+x.n+'<br><b>'+fmt(x.p)+'</b></span><button onclick="chg('+i+',-1)">−</button>'+q+'<button onclick="chg('+i+',1)">+</button></div>'}).join(""):'<p class="empty">Кошик порожній</p>';
+  document.getElementById("cnt").textContent=n;document.getElementById("sum").textContent=fmt(s);
+}
+function toggleCart(o){document.getElementById("drawer").classList.toggle("open",o);document.getElementById("scrim").classList.toggle("on",o)}
+var sl=document.querySelectorAll(".slide"),cur=0,dots=document.getElementById("dots");
+sl.forEach((_,i)=>{var b=document.createElement("button");b.onclick=()=>go(i);dots.appendChild(b)});
+function go(i){cur=i;sl.forEach((s,j)=>s.classList.toggle("on",j==i));[...dots.children].forEach((d,j)=>d.classList.toggle("on",j==i))}
+go(0);setInterval(()=>go((cur+1)%sl.length),5000);
+render();upd();
+</script>
 </body>
 </html>
