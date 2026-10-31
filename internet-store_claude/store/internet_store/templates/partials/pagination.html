@@ -1,7 +1,0 @@
-{% if page.paginator.num_pages > 1 %}
-<nav class="pager" aria-label="Сторінки">
-  {% if page.has_previous %}<a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page.previous_page_number }}">← Назад</a>{% endif %}
-  <span>{{ page.number }} / {{ page.paginator.num_pages }}</span>
-  {% if page.has_next %}<a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page.next_page_number }}">Далі →</a>{% endif %}
-</nav>
-{% endif %}
