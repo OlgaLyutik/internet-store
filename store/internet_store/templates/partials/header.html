@@ -1,0 +1,16 @@
+<div class="top"><div class="wrap"><span>📍 Київ · Доставка по всій Україні</span><span>☎ 0 800 000 000 (безкоштовно) · Пн–Нд 9:00–18:00</span></div></div>
+<header class="main"><div class="wrap">
+  <a class="logo" href="{% url 'index' %}">SHOP</a>
+  <form class="search" action="{% url 'catalog' %}" method="get" role="search">
+    <input id="q" name="q" value="{{ request.GET.q }}" placeholder="Пошук товарів…" aria-label="Пошук">
+    <button type="submit">Знайти</button>
+  </form>
+  <div class="icons">
+    <a class="ibtn" href="{% url 'wishlist' %}" title="Бажане">♡ <span class="t">Бажане</span>{% if wishlist_count %}<span class="badge">{{ wishlist_count }}</span>{% endif %}</a>
+    <a class="ibtn" href="{% url 'cart' %}" title="Кошик">🛒 <span class="t">Кошик</span>{% if cart_count %}<span class="badge">{{ cart_count }}</span>{% endif %}</a>
+  </div>
+</div></header>
+<nav class="cats"><div class="wrap">
+  <a class="sale" href="{% url 'sale' %}">SALE</a>
+  {% for c in nav_categories %}<a href="{{ c.get_absolute_url }}">{{ c.name }}</a>{% endfor %}
+</div></nav>

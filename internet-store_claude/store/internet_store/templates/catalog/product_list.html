@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — SHOP{% endblock %}
+{% block content %}
+<main class="wrap">
+  <nav class="crumbs" aria-label="Навігація"><a href="{% url 'index' %}">Головна</a>
+    {% for name, url in breadcrumbs %} / <a href="{{ url }}">{{ name }}</a>{% endfor %} / <span>{{ title }}</span></nav>
+  <h1 class="ptitle">{{ title }} <small>{{ page.paginator.count }} товарів</small></h1>
+
+  {% if subcategories %}
+  <div class="tabs">
+    {% for c in subcategories %}<a class="tab" href="{{ c.get_absolute_url }}">{{ c.name }}</a>{% endfor %}
+  </div>
+  {% endif %}
+
+  <form class="toolbar" method="get">
+    {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+    <label>Сортування
+      <select name="sort" onchange="this.form.submit()">
+        {% for key, label in sorts %}<option value="{{ key }}" {% if key == sort %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select></label>
+    <noscript><button class="add">Застосувати</button></noscript>
+  </form>
+
+  <div class="grid">
+    {% for p in page %}{% include "partials/product_card.html" %}
+    {% empty %}<p class="empty">Нічого не знайдено</p>{% endfor %}
+  </div>
+  {% include "partials/pagination.html" %}
+</main>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — SHOP{% endblock %}
+{% block content %}
+<main class="wrap narrow prose">
+  <nav class="crumbs"><a href="{% url 'index' %}">Головна</a> / <span>{{ title }}</span></nav>
+  <h1 class="ptitle">{{ title }}</h1>
+  {% block body %}{% endblock %}
+</main>
+{% endblock %}

@@ -1,73 +1,30 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SHOP — шаблон інтернет-магазину</title>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-<div class="top"><div class="wrap"><span>📍 Київ · Доставка по всій Україні</span><span>☎ 0 800 000 000 (безкоштовно) · Пн–Нд 9:00–18:00</span></div></div>
-<header class="main"><div class="wrap">
-  <a class="logo" href="#">SHOP</a>
-  <form class="search" onsubmit="return false"><input id="q" placeholder="Пошук товарів…" aria-label="Пошук"><button type="button" onclick="render()">Знайти</button></form>
-  <div class="icons">
-    <button class="ibtn" title="Бажане">♡ <span class="t">Бажане</span></button>
-    <button class="ibtn" onclick="toggleCart(true)">🛒 <span class="t">Кошик</span><span class="badge" id="cnt">0</span></button>
-  </div>
-</div></header>
-<nav class="cats"><div class="wrap">
-  <a class="sale" href="#">SALE</a><a href="#">Спальня</a><a href="#">Ванна кімната</a><a href="#">Домашній одяг</a><a href="#">Дитячі товари</a><a href="#">Кухня</a><a href="#">Преміум</a><a href="#">Outlet</a>
-</div></nav>
-
+{% extends "base.html" %}
+{% block content %}
 <main class="wrap">
   <section class="hero" id="hero">
     <div class="slide s1 on"><h1>Нова колекція осені</h1><p>Якість від виробника за чесними цінами.</p><a class="cta" href="#hits">Дивитись</a></div>
-    <div class="slide s2"><h1>Розпродаж до −50%</h1><p>Обмежена пропозиція на популярні товари.</p><a class="cta" href="#hits">До акцій</a></div>
-    <div class="slide s3"><h1>Безкоштовна доставка</h1><p>Від 1 500 ₴ по всій Україні.</p><a class="cta" href="#">Умови</a></div>
+    <div class="slide s2"><h1>Розпродаж до −50%</h1><p>Обмежена пропозиція на популярні товари.</p><a class="cta" href="{% url 'sale' %}">До акцій</a></div>
+    <div class="slide s3"><h1>Безкоштовна доставка</h1><p>Від 1 500 ₴ по всій Україні.</p><a class="cta" href="{% url 'page' 'delivery' %}">Умови</a></div>
     <div class="dots" id="dots"></div>
   </section>
 
   <h2>Категорії</h2>
   <div class="tiles">
-    <a class="tile" href="#"><span>🛏️</span>Спальня</a><a class="tile" href="#"><span>🛁</span>Ванна</a><a class="tile" href="#"><span>👘</span>Одяг</a>
-    <a class="tile" href="#"><span>🧸</span>Дитячі</a><a class="tile" href="#"><span>🍽️</span>Кухня</a><a class="tile" href="#"><span>⭐</span>Преміум</a>
+    {% for c in tiles %}<a class="tile" href="{{ c.get_absolute_url }}"><span>{{ c.emoji }}</span>{{ c.name }}</a>{% endfor %}
   </div>
 
   <h2 id="hits">Хіти продажу</h2>
-  <div class="tabs" id="tabs"></div>
-  <div class="grid" id="grid"></div>
-
-  <div class="perks">
-    <div class="perk"><b>🚚 Швидка доставка</b><span>Відправка в день замовлення</span></div>
-    <div class="perk"><b>↩️ Повернення 14 днів</b><span>Без зайвих питань</span></div>
-    <div class="perk"><b>🛡️ Гарантія якості</b><span>Власне виробництво</span></div>
-    <div class="perk"><b>💬 Консультація</b><span>Допоможемо з вибором</span></div>
+  <div class="tabs">
+    <a class="tab {% if not tab %}on{% endif %}" href="{% url 'index' %}#hits">Усі</a>
+    {% for c in hit_categories %}<a class="tab {% if tab == c.slug %}on{% endif %}" href="?c={{ c.slug }}#hits">{{ c.name }}</a>{% endfor %}
   </div>
+  <div class="grid">
+    {% for p in hits %}{% include "partials/product_card.html" %}{% empty %}<p class="empty">Товарів поки немає</p>{% endfor %}
+  </div>
+
+  {% include "partials/perks.html" %}
 
   <h2>Про магазин</h2>
   <p class="about">Тут розмістіть опис вашого магазину: хто ви, що виробляєте або продаєте, чому варто обрати саме вас. Цей блок також корисний для SEO-тексту.</p>
 </main>
-
-<footer><div class="wrap">
-  <div class="fcols">
-    <div><h4>Інформація</h4><a href="#">Про нас</a><a href="#">Акції та знижки</a><a href="#">Блог</a></div>
-    <div><h4>Покупцям</h4><a href="#">Доставка та оплата</a><a href="#">Повернення та обмін</a><a href="#">Контакти</a></div>
-    <div><h4>Контакти</h4><a href="#">0 800 000 000</a><a href="#">info@shop.example</a><a href="#">м. Київ, вул. Прикладна, 1</a></div>
-    <div><h4>Соцмережі</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">Telegram</a></div>
-  </div>
-  <div class="copy">© 2026 SHOP. Усі права захищені.</div>
-</div></footer>
-
-<div class="scrim" id="scrim" onclick="toggleCart(false)"></div>
-<aside class="drawer" id="drawer" aria-label="Кошик">
-  <div class="dh"><span>Кошик</span><button class="ibtn" onclick="toggleCart(false)">✕</button></div>
-  <div class="items" id="items"></div>
-  <div class="total"><span>Разом</span><span id="sum">0 ₴</span></div>
-  <button class="add" onclick="alert('Тут буде оформлення замовлення')">Оформити замовлення</button>
-</aside>
-
-<script src="{% static 'js/script.js' %}"></script>
-</body>
-</html>
+{% endblock %}

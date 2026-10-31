@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load shop_extras %}
+{% block title %}Кошик — SHOP{% endblock %}
+{% block content %}
+<main class="wrap narrow">
+  <h1 class="ptitle">Кошик</h1>
+  {% if lines %}
+  <div class="cart-lines">
+    {% for l in lines %}
+    <div class="cart-row">
+      <a class="thumb" href="{{ l.product.get_absolute_url }}" style="background:{{ l.product.color }}">{{ l.product.emoji }}</a>
+      <div class="n"><a href="{{ l.product.get_absolute_url }}">{{ l.product.name }}</a><br><b>{{ l.product.price|uah }}</b></div>
+      <form class="stepper" method="post" action="{% url 'cart_update' l.product.pk %}">{% csrf_token %}
+        <button name="quantity" value="{{ l.quantity|add:'-1' }}" aria-label="Менше">−</button>
+        <span>{{ l.quantity }}</span>
+        <button name="quantity" value="{{ l.quantity|add:'1' }}" aria-label="Більше">+</button>
+      </form>
+      <div class="sub">{{ l.subtotal|uah }}</div>
+      <form method="post" action="{% url 'cart_remove' l.product.pk %}">{% csrf_token %}<button class="x" aria-label="Видалити">✕</button></form>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="total"><span>Разом</span><span>{{ total|uah }}</span></div>
+  <div class="actions">
+    <a class="ghost" href="{% url 'catalog' %}">← Продовжити покупки</a>
+    <a class="add" href="{% url 'checkout' %}">Оформити замовлення</a>
+  </div>
+  {% else %}
+  <p class="empty">Кошик порожній. <a class="link" href="{% url 'catalog' %}">Перейти до каталогу</a></p>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load shop_extras %}
+{% block title %}Оформлення замовлення — SHOP{% endblock %}
+{% block content %}
+<main class="wrap">
+  <h1 class="ptitle">Оформлення замовлення</h1>
+  <div class="checkout">
+    <form class="form" method="post">{% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for f in form %}
+      <div class="field {% if f.errors %}err{% endif %}">
+        <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+        {{ f }}
+        {% for e in f.errors %}<small>{{ e }}</small>{% endfor %}
+      </div>
+      {% endfor %}
+      <button class="add" type="submit">Підтвердити замовлення</button>
+    </form>
+
+    <aside class="summary">
+      <h3>Ваше замовлення</h3>
+      {% for l in lines %}
+      <div class="srow"><span>{{ l.product.name }} × {{ l.quantity }}</span><b>{{ l.subtotal|uah }}</b></div>
+      {% endfor %}
+      <div class="total"><span>Разом</span><span>{{ total|uah }}</span></div>
+      <a class="link" href="{% url 'cart' %}">← Змінити кошик</a>
+    </aside>
+  </div>
+</main>
+{% endblock %}

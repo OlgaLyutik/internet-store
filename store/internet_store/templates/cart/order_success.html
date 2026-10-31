@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load shop_extras %}
+{% block title %}Замовлення прийнято — SHOP{% endblock %}
+{% block content %}
+<main class="wrap narrow done">
+  <div class="big-emoji">🎉</div>
+  <h1 class="ptitle">Дякуємо! Замовлення №{{ order.pk }} прийнято</h1>
+  <p class="about">Ми зателефонуємо за номером {{ order.phone }}, щоб підтвердити замовлення.</p>
+  <div class="summary">
+    {% for i in order.items.all %}<div class="srow"><span>{{ i.name }} × {{ i.quantity }}</span><b>{{ i.subtotal|uah }}</b></div>{% endfor %}
+    <div class="total"><span>Разом</span><span>{{ order.total|uah }}</span></div>
+  </div>
+  <p><a class="add" href="{% url 'index' %}">На головну</a></p>
+</main>
+{% endblock %}
