@@ -43,6 +43,7 @@ class Product(models.Model):
                                             help_text="Заповніть, щоб товар потрапив у SALE")
     emoji = models.CharField("Емодзі-заглушка", max_length=8, default="🛏️",
                              help_text="Показується, поки немає фото")
+    image = models.ImageField("Фото", upload_to="products/", blank=True)
     color = models.CharField("Колір фону картки", max_length=7, default="#e4e6ee")
     reviews_count = models.PositiveIntegerField("Кількість відгуків", default=0)
     is_hit = models.BooleanField("Хіт продажу", default=False)
